@@ -1,0 +1,59 @@
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
+using FluentAssertions;
+using Microsoft.AspNetCore.Mvc.Testing;
+using Sat.Recruitment.Api;
+using Sat.Recruitment.Api.Controllers.Users;
+using Xunit;
+
+namespace Sat.Recruitment.Test.Controllers.Users
+{
+    public class UsersControllerTests : ControllerTest
+    {
+        public UsersControllerTests(WebApplicationFactory<Program> fixture) : base(fixture)
+        {
+        }
+
+        [Fact]
+        public async Task Should_Create_User()
+        {
+            var response = await GivenUserCreationRequested(CreateUserRequestMother.NotCreated());
+            await AssertUserCreated(response);
+        }
+        
+        [Fact]
+        public async Task Should_Not_Create_User_When_Already_Exists()
+        {
+            var response = await GivenUserCreationRequested(CreateUserRequestMother.ExistentUser());
+            await AssertUserDuplicated(response);
+        }
+        
+        private async Task<HttpResponseMessage> GivenUserCreationRequested(CreateUserRequest request)
+        {
+            HttpClient client = CreateClient();
+
+            var response = await client.PostAsync(
+                "/users/create-user",
+                JsonContent.Create(request)
+            );
+            return response;
+        }
+        
+        private static async Task AssertUserCreated(HttpResponseMessage response)
+        {
+            response.IsSuccessStatusCode.Should().BeTrue();
+            var data = await response.Content.ReadFromJsonAsync<CreateUserResponse>();
+            data.Errors.Should().Be("User Created");
+            data.IsSuccess.Should().BeTrue();
+        }
+
+        private static async Task AssertUserDuplicated(HttpResponseMessage response)
+        {
+            response.IsSuccessStatusCode.Should().BeTrue();
+            var data = await response.Content.ReadFromJsonAsync<CreateUserResponse>();
+            data.Errors.Should().Be("The user is duplicated");
+            data.IsSuccess.Should().BeFalse();
+        }
+    }
+}

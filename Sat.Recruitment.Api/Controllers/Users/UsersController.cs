@@ -6,32 +6,25 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Sat.Recruitment.Api.Controllers.Users
 {
-    public class Result
-    {
-        public bool IsSuccess { get; set; }
-        public string Errors { get; set; }
-    }
-
     [ApiController]
     [Route("[controller]")]
     public partial class UsersController : ControllerBase
     {
-
         private readonly List<User> _users = new List<User>();
+
         public UsersController()
         {
         }
 
         [HttpPost]
-        [Route("/create-user")]
-        public async Task<Result> CreateUser(string name, string email, string address, string phone, string userType, string money)
+        [Route("create-user")]
+        public async Task<CreateUserResponse> CreateUser([FromBody] CreateUserRequest request)
         {
             var errors = "";
+            ValidateErrors(request.Name, request.Email, request.Address, request.Phone, ref errors);
 
-            ValidateErrors(name, email, address, phone, ref errors);
-
-            if (errors != null && errors != "")
-                return new Result()
+            if (!string.IsNullOrEmpty(errors))
+                return new CreateUserResponse()
                 {
                     IsSuccess = false,
                     Errors = errors
@@ -39,47 +32,50 @@ namespace Sat.Recruitment.Api.Controllers.Users
 
             var newUser = new User
             {
-                Name = name,
-                Email = email,
-                Address = address,
-                Phone = phone,
-                UserType = userType,
-                Money = decimal.Parse(money)
+                Name = request.Name,
+                Email = request.Email,
+                Address = request.Address,
+                Phone = request.Phone,
+                UserType = request.UserType,
+                Money = decimal.Parse(request.Money)
             };
 
             if (newUser.UserType == "Normal")
             {
-                if (decimal.Parse(money) > 100)
+                if (decimal.Parse(request.Money) > 100)
                 {
                     var percentage = Convert.ToDecimal(0.12);
                     //If new user is normal and has more than USD100
-                    var gif = decimal.Parse(money) * percentage;
+                    var gif = decimal.Parse(request.Money) * percentage;
                     newUser.Money = newUser.Money + gif;
                 }
-                if (decimal.Parse(money) < 100)
+
+                if (decimal.Parse(request.Money) < 100)
                 {
-                    if (decimal.Parse(money) > 10)
+                    if (decimal.Parse(request.Money) > 10)
                     {
                         var percentage = Convert.ToDecimal(0.8);
-                        var gif = decimal.Parse(money) * percentage;
+                        var gif = decimal.Parse(request.Money) * percentage;
                         newUser.Money = newUser.Money + gif;
                     }
                 }
             }
+
             if (newUser.UserType == "SuperUser")
             {
-                if (decimal.Parse(money) > 100)
+                if (decimal.Parse(request.Money) > 100)
                 {
                     var percentage = Convert.ToDecimal(0.20);
-                    var gif = decimal.Parse(money) * percentage;
+                    var gif = decimal.Parse(request.Money) * percentage;
                     newUser.Money = newUser.Money + gif;
                 }
             }
+
             if (newUser.UserType == "Premium")
             {
-                if (decimal.Parse(money) > 100)
+                if (decimal.Parse(request.Money) > 100)
                 {
-                    var gif = decimal.Parse(money) * 2;
+                    var gif = decimal.Parse(request.Money) * 2;
                     newUser.Money = newUser.Money + gif;
                 }
             }
@@ -88,13 +84,13 @@ namespace Sat.Recruitment.Api.Controllers.Users
             var reader = ReadUsersFromFile();
 
             //Normalize email
-            var aux = newUser.Email.Split(new char[] { '@' }, StringSplitOptions.RemoveEmptyEntries);
+            var aux = newUser.Email.Split(new char[] {'@'}, StringSplitOptions.RemoveEmptyEntries);
 
             var atIndex = aux[0].IndexOf("+", StringComparison.Ordinal);
 
             aux[0] = atIndex < 0 ? aux[0].Replace(".", "") : aux[0].Replace(".", "").Remove(atIndex);
 
-            newUser.Email = string.Join("@", new string[] { aux[0], aux[1] });
+            newUser.Email = string.Join("@", new string[] {aux[0], aux[1]});
 
             while (reader.Peek() >= 0)
             {
@@ -110,6 +106,7 @@ namespace Sat.Recruitment.Api.Controllers.Users
                 };
                 _users.Add(user);
             }
+
             reader.Close();
             try
             {
@@ -129,7 +126,6 @@ namespace Sat.Recruitment.Api.Controllers.Users
                             isDuplicated = true;
                             throw new Exception("User is duplicated");
                         }
-
                     }
                 }
 
@@ -137,7 +133,7 @@ namespace Sat.Recruitment.Api.Controllers.Users
                 {
                     Debug.WriteLine("User Created");
 
-                    return new Result()
+                    return new CreateUserResponse()
                     {
                         IsSuccess = true,
                         Errors = "User Created"
@@ -147,7 +143,7 @@ namespace Sat.Recruitment.Api.Controllers.Users
                 {
                     Debug.WriteLine("The user is duplicated");
 
-                    return new Result()
+                    return new CreateUserResponse()
                     {
                         IsSuccess = false,
                         Errors = "The user is duplicated"
@@ -157,18 +153,12 @@ namespace Sat.Recruitment.Api.Controllers.Users
             catch
             {
                 Debug.WriteLine("The user is duplicated");
-                return new Result()
+                return new CreateUserResponse()
                 {
                     IsSuccess = false,
                     Errors = "The user is duplicated"
                 };
             }
-
-            return new Result()
-            {
-                IsSuccess = true,
-                Errors = "User Created"
-            };
         }
 
         //Validate errors
@@ -187,14 +177,5 @@ namespace Sat.Recruitment.Api.Controllers.Users
                 //Validate if Phone is null
                 errors = errors + " The phone is required";
         }
-    }
-    public class User
-    {
-        public string Name { get; set; }
-        public string Email { get; set; }
-        public string Address { get; set; }
-        public string Phone { get; set; }
-        public string UserType { get; set; }
-        public decimal Money { get; set; }
     }
 }
