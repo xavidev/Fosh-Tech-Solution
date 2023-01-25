@@ -1,12 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Sat.Recruitment.Api.Controllers
+namespace Sat.Recruitment.Api.Controllers.Users
 {
     public class Result
     {
@@ -108,7 +106,7 @@ namespace Sat.Recruitment.Api.Controllers
                     Phone = line.Split(',')[2].ToString(),
                     Address = line.Split(',')[3].ToString(),
                     UserType = line.Split(',')[4].ToString(),
-                    Money = decimal.Parse(line.Split(',')[5].ToString()),
+                    Money = decimal.Parse((string) line.Split(',')[5].ToString()),
                 };
                 _users.Add(user);
             }

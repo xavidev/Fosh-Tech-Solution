@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Sat.Recruitment.Api.Controllers;
 
 using Xunit;
+using UsersController = Sat.Recruitment.Api.Controllers.Users.UsersController;
 
 namespace Sat.Recruitment.Test
 {
