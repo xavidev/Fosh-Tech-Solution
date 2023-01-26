@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -34,15 +35,13 @@ namespace Sat.Recruitment.Test.Controllers.Users
         public async Task Should_Not_Create_User_When_Invalid_User_Request()
         {
             var response = await GivenPostRequest(CreateUserRequestMother.Invalid(), "/users/create-user");
-            await AssertInvalidUser(response);
+            AssertInvalidRequest(response);
         }
 
-        private async Task AssertInvalidUser(HttpResponseMessage response)
+        private static void AssertInvalidRequest(HttpResponseMessage response)
         {
-            response.IsSuccessStatusCode.Should().BeTrue();
-            var data = await response.Content.ReadFromJsonAsync<CreateUserResponse>();
-            data.Errors.Should().Contain("is required", AtLeast.Times(4));
-            data.IsSuccess.Should().BeFalse();
+            response.IsSuccessStatusCode.Should().BeFalse();
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
         private static async Task AssertUserCreated(HttpResponseMessage response)

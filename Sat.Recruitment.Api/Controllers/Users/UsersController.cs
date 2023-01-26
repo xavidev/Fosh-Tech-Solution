@@ -20,16 +20,6 @@ namespace Sat.Recruitment.Api.Controllers.Users
         [Route("create-user")]
         public async Task<CreateUserResponse> CreateUser([FromBody] CreateUserRequest request)
         {
-            var errors = "";
-            ValidateErrors(request.Name, request.Email, request.Address, request.Phone, ref errors);
-
-            if (!string.IsNullOrEmpty(errors))
-                return new CreateUserResponse()
-                {
-                    IsSuccess = false,
-                    Errors = errors
-                };
-
             var newUser = new User
             {
                 Name = request.Name,
@@ -159,23 +149,6 @@ namespace Sat.Recruitment.Api.Controllers.Users
                     Errors = "The user is duplicated"
                 };
             }
-        }
-
-        //Validate errors
-        private void ValidateErrors(string name, string email, string address, string phone, ref string errors)
-        {
-            if (name == null)
-                //Validate if Name is null
-                errors = "The name is required";
-            if (email == null)
-                //Validate if Email is null
-                errors = errors + " The email is required";
-            if (address == null)
-                //Validate if Address is null
-                errors = errors + " The address is required";
-            if (phone == null)
-                //Validate if Phone is null
-                errors = errors + " The phone is required";
         }
     }
 }
