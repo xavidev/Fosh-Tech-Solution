@@ -30,58 +30,11 @@ namespace Sat.Recruitment.Api.Controllers.Users
                 Money = decimal.Parse(request.Money)
             };
 
-            if (newUser.UserType == "Normal")
-            {
-                if (decimal.Parse(request.Money) > 100)
-                {
-                    var percentage = Convert.ToDecimal(0.12);
-                    //If new user is normal and has more than USD100
-                    var gif = decimal.Parse(request.Money) * percentage;
-                    newUser.Money = newUser.Money + gif;
-                }
-
-                if (decimal.Parse(request.Money) < 100)
-                {
-                    if (decimal.Parse(request.Money) > 10)
-                    {
-                        var percentage = Convert.ToDecimal(0.8);
-                        var gif = decimal.Parse(request.Money) * percentage;
-                        newUser.Money = newUser.Money + gif;
-                    }
-                }
-            }
-
-            if (newUser.UserType == "SuperUser")
-            {
-                if (decimal.Parse(request.Money) > 100)
-                {
-                    var percentage = Convert.ToDecimal(0.20);
-                    var gif = decimal.Parse(request.Money) * percentage;
-                    newUser.Money = newUser.Money + gif;
-                }
-            }
-
-            if (newUser.UserType == "Premium")
-            {
-                if (decimal.Parse(request.Money) > 100)
-                {
-                    var gif = decimal.Parse(request.Money) * 2;
-                    newUser.Money = newUser.Money + gif;
-                }
-            }
-
-
+            SetMoneyValueToUser(request, newUser);
+            SetUserMail(newUser);
+            
             var reader = ReadUsersFromFile();
-
-            //Normalize email
-            var aux = newUser.Email.Split(new char[] {'@'}, StringSplitOptions.RemoveEmptyEntries);
-
-            var atIndex = aux[0].IndexOf("+", StringComparison.Ordinal);
-
-            aux[0] = atIndex < 0 ? aux[0].Replace(".", "") : aux[0].Replace(".", "").Remove(atIndex);
-
-            newUser.Email = string.Join("@", new string[] {aux[0], aux[1]});
-
+            
             while (reader.Peek() >= 0)
             {
                 var line = reader.ReadLineAsync().Result;
@@ -148,6 +101,67 @@ namespace Sat.Recruitment.Api.Controllers.Users
                     IsSuccess = false,
                     Errors = "The user is duplicated"
                 };
+            }
+        }
+
+        private static void SetUserMail(User newUser)
+        {
+            var aux = newUser.Email.Split(new char[] {'@'}, StringSplitOptions.RemoveEmptyEntries);
+
+            var atIndex = aux[0].IndexOf("+", StringComparison.Ordinal);
+
+            aux[0] = atIndex < 0 ? aux[0].Replace(".", "") : aux[0].Replace(".", "").Remove(atIndex);
+
+            newUser.Email = string.Join("@", new string[] {aux[0], aux[1]});
+        }
+
+        private static void SetMoneyValueToUser(CreateUserRequest request, User newUser)
+        {
+            switch (newUser.UserType)
+            {
+                case "Normal":
+                {
+                    if (decimal.Parse(request.Money) > 100)
+                    {
+                        var percentage = Convert.ToDecimal(0.12);
+                        //If new user is normal and has more than USD100
+                        var gif = decimal.Parse(request.Money) * percentage;
+                        newUser.Money = newUser.Money + gif;
+                    }
+
+                    if (decimal.Parse(request.Money) < 100)
+                    {
+                        if (decimal.Parse(request.Money) > 10)
+                        {
+                            var percentage = Convert.ToDecimal(0.8);
+                            var gif = decimal.Parse(request.Money) * percentage;
+                            newUser.Money = newUser.Money + gif;
+                        }
+                    }
+
+                    break;
+                }
+                case "SuperUser":
+                {
+                    if (decimal.Parse(request.Money) > 100)
+                    {
+                        var percentage = Convert.ToDecimal(0.20);
+                        var gif = decimal.Parse(request.Money) * percentage;
+                        newUser.Money = newUser.Money + gif;
+                    }
+
+                    break;
+                }
+                case "Premium":
+                {
+                    if (decimal.Parse(request.Money) > 100)
+                    {
+                        var gif = decimal.Parse(request.Money) * 2;
+                        newUser.Money = newUser.Money + gif;
+                    }
+
+                    break;
+                }
             }
         }
     }
