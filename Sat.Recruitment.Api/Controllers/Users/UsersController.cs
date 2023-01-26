@@ -10,12 +10,6 @@ namespace Sat.Recruitment.Api.Controllers.Users
     [Route("[controller]")]
     public partial class UsersController : ControllerBase
     {
-        private readonly List<User> _users = new List<User>();
-
-        public UsersController()
-        {
-        }
-
         [HttpPost]
         [Route("create-user")]
         public async Task<CreateUserResponse> CreateUser([FromBody] CreateUserRequest request)
@@ -32,29 +26,13 @@ namespace Sat.Recruitment.Api.Controllers.Users
 
             SetMoneyValueToUser(request, newUser);
             SetUserMail(newUser);
-            
-            var reader = ReadUsersFromFile();
-            
-            while (reader.Peek() >= 0)
-            {
-                var line = reader.ReadLineAsync().Result;
-                var user = new User
-                {
-                    Name = line.Split(',')[0].ToString(),
-                    Email = line.Split(',')[1].ToString(),
-                    Phone = line.Split(',')[2].ToString(),
-                    Address = line.Split(',')[3].ToString(),
-                    UserType = line.Split(',')[4].ToString(),
-                    Money = decimal.Parse((string) line.Split(',')[5].ToString()),
-                };
-                _users.Add(user);
-            }
 
-            reader.Close();
+            List<User> users = GetAllUsers();
+            
             try
             {
                 var isDuplicated = false;
-                foreach (var user in _users)
+                foreach (var user in users)
                 {
                     if (user.Email == newUser.Email
                         ||
@@ -102,6 +80,32 @@ namespace Sat.Recruitment.Api.Controllers.Users
                     Errors = "The user is duplicated"
                 };
             }
+        }
+
+        private List<User> GetAllUsers()
+        {
+            List<User> users = new List<User>();
+            
+            var reader = ReadUsersFromFile();
+
+            while (reader.Peek() >= 0)
+            {
+                var line = reader.ReadLineAsync().Result;
+                var user = new User
+                {
+                    Name = line.Split(',')[0].ToString(),
+                    Email = line.Split(',')[1].ToString(),
+                    Phone = line.Split(',')[2].ToString(),
+                    Address = line.Split(',')[3].ToString(),
+                    UserType = line.Split(',')[4].ToString(),
+                    Money = decimal.Parse((string) line.Split(',')[5].ToString()),
+                };
+                users.Add(user);
+            }
+
+            reader.Close();
+
+            return users;
         }
 
         private static void SetUserMail(User newUser)
