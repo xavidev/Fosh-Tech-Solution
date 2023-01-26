@@ -1,4 +1,4 @@
-namespace Sat.Recruitment.Api.Controllers.Users
+namespace Sat.Recruitment.Api.Models
 {
     public class User
     {
