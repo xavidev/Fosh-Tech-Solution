@@ -18,28 +18,17 @@ namespace Sat.Recruitment.Test.Controllers.Users
         [Fact]
         public async Task Should_Create_User()
         {
-            var response = await GivenUserCreationRequested(CreateUserRequestMother.NotCreated());
+            var response = await GivenPostRequest(CreateUserRequestMother.NotCreated(), "/users/create-user");
             await AssertUserCreated(response);
         }
         
         [Fact]
         public async Task Should_Not_Create_User_When_Already_Exists()
         {
-            var response = await GivenUserCreationRequested(CreateUserRequestMother.ExistentUser());
+            var response = await GivenPostRequest(CreateUserRequestMother.ExistentUser(), "/users/create-user");
             await AssertUserDuplicated(response);
         }
-        
-        private async Task<HttpResponseMessage> GivenUserCreationRequested(CreateUserRequest request)
-        {
-            HttpClient client = CreateClient();
 
-            var response = await client.PostAsync(
-                "/users/create-user",
-                JsonContent.Create(request)
-            );
-            return response;
-        }
-        
         private static async Task AssertUserCreated(HttpResponseMessage response)
         {
             response.IsSuccessStatusCode.Should().BeTrue();
