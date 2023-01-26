@@ -2,7 +2,7 @@ using Sat.Recruitment.Api.Controllers.Users;
 
 namespace Sat.Recruitment.Test.Controllers.Users
 {
-    public class CreateUserRequestMother
+    public static class CreateUserRequestMother
     {
         public static CreateUserRequest NotCreated()
         {
@@ -13,6 +13,11 @@ namespace Sat.Recruitment.Test.Controllers.Users
         {
             return new CreateUserRequest("Agustina", "Agustina@gmail.com", "Av. Juan G", "+349 1122354215", "Normal",
                 "124");
+        }
+
+        public static CreateUserRequest Invalid()
+        {
+            return new CreateUserRequest(null, null, null, null, null, null);
         }
     }
 }
