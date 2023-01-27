@@ -1,23 +1,27 @@
-using System;
-using System.Text;
-
-namespace Sat.Recruitment.Api.Models
+namespace Sat.Recruitment.Api.Models.Users
 {
     public class User
     {
-        public string Name { get; }
-        public string Email { get; set; }
-        public string Address { get; }
-        public string Phone { get;  }
+        public string Name => this.personal.Name;
+
+        public string Email
+        {
+            get => personal.Email;
+
+            set => this.email = value;
+        }
+
+        public string Address => this.personal.Address;
+        public string Phone => this.personal.Phone;
         public string UserType { get; }
         public decimal Money { get; }
+
+        private Personal personal;
+        private string email;
         
         public User(string name, string email, string address, string phone, string userType, decimal initialMoney)
         {
-            Name = name;
-            Email = email;
-            Address = address;
-            Phone = phone;
+            this.personal = new Personal(name, email, address, phone);
             UserType = userType;
             Money = initialMoney + CalculateWelcomeGift(initialMoney);
         }

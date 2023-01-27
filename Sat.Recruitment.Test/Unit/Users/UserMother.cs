@@ -1,5 +1,6 @@
 using Bogus;
 using Sat.Recruitment.Api.Models;
+using Sat.Recruitment.Api.Models.Users;
 
 namespace Sat.Recruitment.Test.Unit.Users
 {

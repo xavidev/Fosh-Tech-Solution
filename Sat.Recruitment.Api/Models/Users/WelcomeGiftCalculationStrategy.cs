@@ -1,6 +1,6 @@
 using System;
 
-namespace Sat.Recruitment.Api.Models
+namespace Sat.Recruitment.Api.Models.Users
 {
     public abstract class WelcomeGiftCalculationStrategy
     {
@@ -31,7 +31,7 @@ namespace Sat.Recruitment.Api.Models
         public override decimal Calculate(decimal initialMoney)
         {
             if (initialMoney <= 100) return 0;
-            
+
             return initialMoney * 2;
         }
     }
@@ -41,7 +41,7 @@ namespace Sat.Recruitment.Api.Models
         public override decimal Calculate(decimal initialMoney)
         {
             if (initialMoney <= 100) return 0;
-            
+
             return initialMoney * Convert.ToDecimal(0.20);
         }
     }
@@ -56,7 +56,7 @@ namespace Sat.Recruitment.Api.Models
             {
                 return initialMoney * Convert.ToDecimal(0.12);
             }
-            
+
             return initialMoney * Convert.ToDecimal(0.8);
         }
     }

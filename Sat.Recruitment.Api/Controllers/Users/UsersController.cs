@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Sat.Recruitment.Api.Models;
+using Sat.Recruitment.Api.Models.Users;
 
 namespace Sat.Recruitment.Api.Controllers.Users
 {
