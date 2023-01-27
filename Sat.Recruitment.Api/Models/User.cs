@@ -10,26 +10,16 @@ namespace Sat.Recruitment.Api.Models
         public string Address { get; }
         public string Phone { get;  }
         public string UserType { get; }
-        public decimal Money { get; private set; }
+        public decimal Money { get; }
         
-        public User(string name, string email, string address, string phone, string userType, decimal money)
+        public User(string name, string email, string address, string phone, string userType, decimal initialMoney)
         {
             Name = name;
             Email = email;
             Address = address;
             Phone = phone;
             UserType = userType;
-            Money = money;
-            SetMoney(money);
-        }
-
-        private void SetMoney(decimal initialMoney)
-        {
-            //I've done research about the term 'gif' in the context of betting,
-            //as I didn't discover nothing about it I'll treat 'gif' as a typo
-            //and I'll use gift :').
-
-            Money += CalculateWelcomeGift(initialMoney);
+            Money = initialMoney + CalculateWelcomeGift(initialMoney);
         }
 
         private decimal CalculateWelcomeGift(decimal initialMoney)
