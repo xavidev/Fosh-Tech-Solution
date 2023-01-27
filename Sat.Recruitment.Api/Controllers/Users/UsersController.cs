@@ -29,64 +29,48 @@ namespace Sat.Recruitment.Api.Controllers.Users
             SetUserMail(newUser);
 
             List<User> users = GetAllUsers();
-            
-            try
-            {
-                var isDuplicated = false;
-                foreach (var user in users)
-                {
-                    if (user.Email == newUser.Email
-                        ||
-                        user.Phone == newUser.Phone)
-                    {
-                        isDuplicated = true;
-                    }
-                    else if (user.Name == newUser.Name)
-                    {
-                        if (user.Address == newUser.Address)
-                        {
-                            isDuplicated = true;
-                            throw new Exception("User is duplicated");
-                        }
-                    }
-                }
-
-                if (!isDuplicated)
-                {
-                    Debug.WriteLine("User Created");
-
-                    return new CreateUserResponse()
-                    {
-                        IsSuccess = true,
-                        Errors = "User Created"
-                    };
-                }
-                else
-                {
-                    Debug.WriteLine("The user is duplicated");
-
-                    return new CreateUserResponse()
-                    {
-                        IsSuccess = false,
-                        Errors = "The user is duplicated"
-                    };
-                }
-            }
-            catch
-            {
-                Debug.WriteLine("The user is duplicated");
+            if (IsDuplicated(users, newUser))
                 return new CreateUserResponse()
                 {
                     IsSuccess = false,
                     Errors = "The user is duplicated"
                 };
+           
+            
+            return new CreateUserResponse()
+            {
+                IsSuccess = true,
+                Errors = "User Created"
+            };
+        }
+
+        private static bool IsDuplicated(List<User> users, User newUser)
+        {
+            bool isDuplicated = false;
+            foreach (var user in users)
+            {
+                if (user.Email == newUser.Email
+                    ||
+                    user.Phone == newUser.Phone)
+                {
+                    isDuplicated = true;
+                }
+                else if (user.Name == newUser.Name)
+                {
+                    if (user.Address == newUser.Address)
+                    {
+                        isDuplicated = true;
+                    }
+                }
             }
+
+            return isDuplicated;
         }
 
         private List<User> GetAllUsers()
         {
             List<User> users = new List<User>();
-            
+
             var reader = ReadUsersFromFile();
 
             while (reader.Peek() >= 0)
