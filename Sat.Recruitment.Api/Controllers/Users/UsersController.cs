@@ -25,7 +25,7 @@ namespace Sat.Recruitment.Api.Controllers.Users
                 Money = decimal.Parse(request.Money)
             };
 
-            SetMoneyValueToUser(decimal.Parse(request.Money), newUser);
+            newUser.SetMoney(decimal.Parse(request.Money));
             SetUserMail(newUser);
 
             List<User> users = GetAllUsers();
@@ -102,56 +102,6 @@ namespace Sat.Recruitment.Api.Controllers.Users
             aux[0] = atIndex < 0 ? aux[0].Replace(".", "") : aux[0].Replace(".", "").Remove(atIndex);
 
             newUser.Email = string.Join("@", new string[] {aux[0], aux[1]});
-        }
-
-        private static void SetMoneyValueToUser(decimal money, User newUser)
-        {
-            switch (newUser.UserType)
-            {
-                case "Normal":
-                {
-                    if (money > 100)
-                    {
-                        var percentage = Convert.ToDecimal(0.12);
-                        //If new user is normal and has more than USD100
-                        var gif = money * percentage;
-                        newUser.Money = newUser.Money + gif;
-                    }
-
-                    if (money < 100)
-                    {
-                        if (money > 10)
-                        {
-                            var percentage = Convert.ToDecimal(0.8);
-                            var gif = money * percentage;
-                            newUser.Money = newUser.Money + gif;
-                        }
-                    }
-
-                    break;
-                }
-                case "SuperUser":
-                {
-                    if (money > 100)
-                    {
-                        var percentage = Convert.ToDecimal(0.20);
-                        var gif = money * percentage;
-                        newUser.Money = newUser.Money + gif;
-                    }
-
-                    break;
-                }
-                case "Premium":
-                {
-                    if (money > 100)
-                    {
-                        var gif = money * 2;
-                        newUser.Money = newUser.Money + gif;
-                    }
-
-                    break;
-                }
-            }
         }
     }
 }
