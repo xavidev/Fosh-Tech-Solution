@@ -13,6 +13,9 @@ namespace Sat.Recruitment.Api.Models
 
         public void SetMoney(decimal money)
         {
+            //I've done research about the term 'gif' in the context of betting,
+            //as I didn't discover nothing about it I'll treat 'gif' as a typo
+            //and I'll use gift :').
             switch (UserType)
             {
                 case "Normal":
