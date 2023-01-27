@@ -24,7 +24,7 @@ namespace Sat.Recruitment.Api.Controllers.Users
                 decimal.Parse(request.Money)
             );
 
-            SetUserMail(newUser);
+            newUser.Email = NormalizeEmail(newUser.Email);
 
             List<User> users = GetAllUsers();
             if (IsDuplicated(users, newUser))
@@ -91,15 +91,15 @@ namespace Sat.Recruitment.Api.Controllers.Users
             return users;
         }
 
-        private static void SetUserMail(User newUser)
+        private static string NormalizeEmail(string email)
         {
-            var aux = newUser.Email.Split(new char[] {'@'}, StringSplitOptions.RemoveEmptyEntries);
+            var aux = email.Split(new char[] {'@'}, StringSplitOptions.RemoveEmptyEntries);
 
             var atIndex = aux[0].IndexOf("+", StringComparison.Ordinal);
 
             aux[0] = atIndex < 0 ? aux[0].Replace(".", "") : aux[0].Replace(".", "").Remove(atIndex);
 
-            newUser.Email = string.Join("@", new string[] {aux[0], aux[1]});
+            return string.Join("@", new string[] {aux[0], aux[1]});
         }
     }
 }

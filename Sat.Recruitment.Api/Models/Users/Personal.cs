@@ -14,5 +14,10 @@ namespace Sat.Recruitment.Api.Models.Users
             Address = address;
             Phone = phone;
         }
+
+        private string NormalizeEmail(string email)
+        {
+            return string.Empty;
+        }
     }
 }
