@@ -15,17 +15,14 @@ namespace Sat.Recruitment.Api.Controllers.Users
         [Route("create-user")]
         public async Task<CreateUserResponse> CreateUser([FromBody] CreateUserRequest request)
         {
-            var newUser = new User
-            {
-                Name = request.Name,
-                Email = request.Email,
-                Address = request.Address,
-                Phone = request.Phone,
-                UserType = request.UserType,
-                Money = decimal.Parse(request.Money)
-            };
+            var newUser = new User(request.Name,
+                request.Email,
+                request.Address,
+                request.Phone,
+                request.UserType,
+                decimal.Parse(request.Money)
+            );
 
-            newUser.SetMoney(decimal.Parse(request.Money));
             SetUserMail(newUser);
 
             List<User> users = GetAllUsers();
@@ -35,8 +32,8 @@ namespace Sat.Recruitment.Api.Controllers.Users
                     IsSuccess = false,
                     Errors = "The user is duplicated"
                 };
-           
-            
+
+
             return new CreateUserResponse()
             {
                 IsSuccess = true,
@@ -76,15 +73,15 @@ namespace Sat.Recruitment.Api.Controllers.Users
             while (reader.Peek() >= 0)
             {
                 var line = reader.ReadLineAsync().Result;
-                var user = new User
-                {
-                    Name = line.Split(',')[0].ToString(),
-                    Email = line.Split(',')[1].ToString(),
-                    Phone = line.Split(',')[2].ToString(),
-                    Address = line.Split(',')[3].ToString(),
-                    UserType = line.Split(',')[4].ToString(),
-                    Money = decimal.Parse((string) line.Split(',')[5].ToString()),
-                };
+                var user = new User(
+                    line.Split(',')[0],
+                    line.Split(',')[1],
+                    line.Split(',')[3],
+                    line.Split(',')[2],
+                    line.Split(',')[4],
+                    decimal.Parse((string) line.Split(',')[5])
+                );
+
                 users.Add(user);
             }
 
