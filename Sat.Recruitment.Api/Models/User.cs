@@ -11,6 +11,22 @@ namespace Sat.Recruitment.Api.Models
         public string UserType { get; set; }
         public decimal Money { get; set; }
 
+        public User()
+        {
+            
+        }
+
+        public User(string name, string email, string address, string phone, string userType, decimal money)
+        {
+            Name = name;
+            Email = email;
+            Address = address;
+            Phone = phone;
+            UserType = userType;
+            Money = money;
+            SetMoney(money);
+        }
+
         public void SetMoney(decimal money)
         {
             //I've done research about the term 'gif' in the context of betting,

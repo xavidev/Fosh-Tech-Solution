@@ -7,15 +7,41 @@ namespace Sat.Recruitment.Test.Unit.Users
     {
         public static User Normal(decimal initialMoney)
         {
-            var user = new Faker<User>()
-                .RuleFor(x => x.Address, f => f.Address.Direction())
-                .RuleFor(x => x.Email, f => f.Internet.Email())
-                .RuleFor(x => x.Name, f => f.Person.FirstName)
-                .RuleFor(x => x.Phone, f => f.Person.Phone)
-                .RuleFor(x => x.UserType, "Normal")
-                .RuleFor(x => x.Money, initialMoney);
+            return new Faker<User>()
+                .CustomInstantiator(f => 
+                    new User(
+                        f.Person.FirstName,
+                        f.Person.Email,
+                        f.Address.Direction(),
+                        f.Person.Phone,
+                        "Normal",
+                        initialMoney));
+        }
 
-            return user;
+        public static User Super(decimal initialMoney)
+        {
+            return new Faker<User>()
+                .CustomInstantiator(f => 
+                    new User(
+                        f.Person.FirstName,
+                        f.Person.Email,
+                        f.Address.Direction(),
+                        f.Person.Phone,
+                        "SuperUser",
+                        initialMoney));
+        }
+
+        public static User Premium(decimal initialMoney)
+        {
+            return new Faker<User>()
+                .CustomInstantiator(f => 
+                    new User(
+                        f.Person.FirstName,
+                        f.Person.Email,
+                        f.Address.Direction(),
+                        f.Person.Phone,
+                        "Premium",
+                        initialMoney));
         }
     }
 }
