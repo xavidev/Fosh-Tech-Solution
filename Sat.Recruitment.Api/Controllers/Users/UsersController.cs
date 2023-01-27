@@ -25,7 +25,7 @@ namespace Sat.Recruitment.Api.Controllers.Users
                 Money = decimal.Parse(request.Money)
             };
 
-            SetMoneyValueToUser(request, newUser);
+            SetMoneyValueToUser(decimal.Parse(request.Money), newUser);
             SetUserMail(newUser);
 
             List<User> users = GetAllUsers();
@@ -104,26 +104,26 @@ namespace Sat.Recruitment.Api.Controllers.Users
             newUser.Email = string.Join("@", new string[] {aux[0], aux[1]});
         }
 
-        private static void SetMoneyValueToUser(CreateUserRequest request, User newUser)
+        private static void SetMoneyValueToUser(decimal money, User newUser)
         {
             switch (newUser.UserType)
             {
                 case "Normal":
                 {
-                    if (decimal.Parse(request.Money) > 100)
+                    if (money > 100)
                     {
                         var percentage = Convert.ToDecimal(0.12);
                         //If new user is normal and has more than USD100
-                        var gif = decimal.Parse(request.Money) * percentage;
+                        var gif = money * percentage;
                         newUser.Money = newUser.Money + gif;
                     }
 
-                    if (decimal.Parse(request.Money) < 100)
+                    if (money < 100)
                     {
-                        if (decimal.Parse(request.Money) > 10)
+                        if (money > 10)
                         {
                             var percentage = Convert.ToDecimal(0.8);
-                            var gif = decimal.Parse(request.Money) * percentage;
+                            var gif = money * percentage;
                             newUser.Money = newUser.Money + gif;
                         }
                     }
@@ -132,10 +132,10 @@ namespace Sat.Recruitment.Api.Controllers.Users
                 }
                 case "SuperUser":
                 {
-                    if (decimal.Parse(request.Money) > 100)
+                    if (money > 100)
                     {
                         var percentage = Convert.ToDecimal(0.20);
-                        var gif = decimal.Parse(request.Money) * percentage;
+                        var gif = money * percentage;
                         newUser.Money = newUser.Money + gif;
                     }
 
@@ -143,9 +143,9 @@ namespace Sat.Recruitment.Api.Controllers.Users
                 }
                 case "Premium":
                 {
-                    if (decimal.Parse(request.Money) > 100)
+                    if (money > 100)
                     {
-                        var gif = decimal.Parse(request.Money) * 2;
+                        var gif = money * 2;
                         newUser.Money = newUser.Money + gif;
                     }
 
