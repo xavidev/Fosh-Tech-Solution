@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -9,7 +8,7 @@ using Sat.Recruitment.Api;
 using Sat.Recruitment.Api.Controllers.Users;
 using Xunit;
 
-namespace Sat.Recruitment.Test.Controllers.Users
+namespace Sat.Recruitment.Test.Acceptance.Controllers.Users
 {
     public class UsersControllerTests : ControllerTest
     {

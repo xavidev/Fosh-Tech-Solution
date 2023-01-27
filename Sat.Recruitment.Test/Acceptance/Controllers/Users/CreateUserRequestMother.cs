@@ -1,6 +1,6 @@
 using Sat.Recruitment.Api.Controllers.Users;
 
-namespace Sat.Recruitment.Test.Controllers.Users
+namespace Sat.Recruitment.Test.Acceptance.Controllers.Users
 {
     public static class CreateUserRequestMother
     {

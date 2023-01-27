@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Sat.Recruitment.Api;
 using Xunit;
 
-namespace Sat.Recruitment.Test
+namespace Sat.Recruitment.Test.Acceptance.Controllers
 {
     public class ControllerTest : IClassFixture<WebApplicationFactory<Program>>
     {
