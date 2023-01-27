@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 
 namespace Sat.Recruitment.Api.Models
 {
@@ -27,22 +28,21 @@ namespace Sat.Recruitment.Api.Models
             //I've done research about the term 'gif' in the context of betting,
             //as I didn't discover nothing about it I'll treat 'gif' as a typo
             //and I'll use gift :').
+            decimal gift = 0;
             switch (UserType)
             {
                 case "Normal":
                 {
                     if (money > 100)
                     {
-                        var gif = money * Convert.ToDecimal(0.12);
-                        Money += gif;
+                        gift = money * Convert.ToDecimal(0.12);
                     }
 
                     if (money < 100)
                     {
                         if (money > 10)
                         {
-                            var gif = money * Convert.ToDecimal(0.8);
-                            Money += gif;
+                            gift = money * Convert.ToDecimal(0.8);
                         }
                     }
 
@@ -52,8 +52,7 @@ namespace Sat.Recruitment.Api.Models
                 {
                     if (money > 100)
                     {
-                        var gif = money * Convert.ToDecimal(0.20);
-                        Money += gif;
+                        gift = money * Convert.ToDecimal(0.20);
                     }
 
                     break;
@@ -62,13 +61,14 @@ namespace Sat.Recruitment.Api.Models
                 {
                     if (money > 100)
                     {
-                        var gif = money * 2;
-                        Money += gif;
+                        gift = money * 2;
                     }
 
                     break;
                 }
             }
+
+            Money += gift;
         }
     }
 }
