@@ -28,6 +28,12 @@ namespace Sat.Recruitment.Api.Models
             //I've done research about the term 'gif' in the context of betting,
             //as I didn't discover nothing about it I'll treat 'gif' as a typo
             //and I'll use gift :').
+
+            Money += CalculateWelcomeGift(money);
+        }
+
+        private decimal CalculateWelcomeGift(decimal money)
+        {
             decimal gift = 0;
             switch (UserType)
             {
@@ -68,7 +74,7 @@ namespace Sat.Recruitment.Api.Models
                 }
             }
 
-            Money += gift;
+            return gift;
         }
     }
 }
