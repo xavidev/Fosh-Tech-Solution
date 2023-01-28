@@ -24,8 +24,6 @@ namespace Sat.Recruitment.Api.Controllers.Users
                 decimal.Parse(request.Money)
             );
 
-            newUser.Email = NormalizeEmail(newUser.Email);
-
             List<User> users = GetAllUsers();
             if (IsDuplicated(users, newUser))
                 return new CreateUserResponse()

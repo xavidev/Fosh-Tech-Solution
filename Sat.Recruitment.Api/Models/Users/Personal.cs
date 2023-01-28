@@ -10,14 +10,9 @@ namespace Sat.Recruitment.Api.Models.Users
         public Personal(string name, string email, string address, string phone)
         {
             Name = name;
-            Email = email;
+            Email = new Email(email).Value;
             Address = address;
             Phone = phone;
-        }
-
-        private string NormalizeEmail(string email)
-        {
-            return string.Empty;
         }
     }
 }
