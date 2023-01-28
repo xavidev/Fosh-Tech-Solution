@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Sat.Recruitment.Api.Models.Users;
 
 namespace Sat.Recruitment.Api.Persistence
 {
     public class CSVFileUserRepository : IUserRepository
     {
-        public IEnumerable<User> GetAll()
+        public async Task<IEnumerable<User>> GetAll()
         {
             List<User> users = new List<User>();
 
@@ -14,7 +15,7 @@ namespace Sat.Recruitment.Api.Persistence
 
             while (reader.Peek() >= 0)
             {
-                var line = reader.ReadLineAsync().Result;
+                var line = await reader.ReadLineAsync();
                 var user = new User(
                     line.Split(',')[0],
                     line.Split(',')[1],

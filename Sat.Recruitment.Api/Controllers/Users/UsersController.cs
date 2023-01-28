@@ -21,7 +21,7 @@ namespace Sat.Recruitment.Api.Controllers.Users
         {
             try
             {
-                userCreator.CreateUser(request.Name,
+                await userCreator.CreateUser(request.Name,
                     request.Email,
                     request.Address,
                     request.Phone,
