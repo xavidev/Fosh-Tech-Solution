@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +30,6 @@ namespace Sat.Recruitment.Api.Controllers.Users
                     IsSuccess = false,
                     Errors = "The user is duplicated"
                 };
-
 
             return new CreateUserResponse()
             {
@@ -87,17 +85,6 @@ namespace Sat.Recruitment.Api.Controllers.Users
             reader.Close();
 
             return users;
-        }
-
-        private static string NormalizeEmail(string email)
-        {
-            var aux = email.Split(new char[] {'@'}, StringSplitOptions.RemoveEmptyEntries);
-
-            var atIndex = aux[0].IndexOf("+", StringComparison.Ordinal);
-
-            aux[0] = atIndex < 0 ? aux[0].Replace(".", "") : aux[0].Replace(".", "").Remove(atIndex);
-
-            return string.Join("@", new string[] {aux[0], aux[1]});
         }
     }
 }
