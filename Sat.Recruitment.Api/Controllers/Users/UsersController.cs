@@ -26,7 +26,7 @@ namespace Sat.Recruitment.Api.Controllers.Users
                     request.Address,
                     request.Phone,
                     request.UserType,
-                    decimal.Parse(request.Money));
+                    request.Money);
             }
             catch (UserDuplicatedException ex)
             {

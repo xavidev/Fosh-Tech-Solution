@@ -16,14 +16,14 @@ namespace Sat.Recruitment.Api.Controllers.Users
         [Required]
         public string UserType { get; set; }
         [Required]
-        public string Money { get; set; }
+        public decimal Money { get; set; }
 
         public CreateUserRequest()
         {
             
         }
 
-        public CreateUserRequest(string name, string email, string address, string phone, string userType, string money)
+        public CreateUserRequest(string name, string email, string address, string phone, string userType, decimal money)
         {
             Name = name;
             Email = email;

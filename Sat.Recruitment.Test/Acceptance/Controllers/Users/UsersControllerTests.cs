@@ -37,6 +37,13 @@ namespace Sat.Recruitment.Test.Acceptance.Controllers.Users
             AssertInvalidRequest(response);
         }
 
+        [Fact]
+        public async Task Should_Not_Create_User_When_Invalid_Initial_Money()
+        {
+            var response = await GivenPostRequest(CreateUserRequestMother.Invalid(), "/users/create-user");
+            AssertInvalidRequest(response);
+        }
+
         private static void AssertInvalidRequest(HttpResponseMessage response)
         {
             response.IsSuccessStatusCode.Should().BeFalse();
