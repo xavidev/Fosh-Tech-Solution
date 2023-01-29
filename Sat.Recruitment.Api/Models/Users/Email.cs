@@ -1,6 +1,4 @@
-using System;
 using System.Diagnostics;
-using Microsoft.Extensions.Options;
 
 namespace Sat.Recruitment.Api.Models.Users
 {
