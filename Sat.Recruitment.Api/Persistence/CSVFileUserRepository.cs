@@ -7,22 +7,30 @@ namespace Sat.Recruitment.Api.Persistence
 {
     public class CSVFileUserRepository : IUserRepository
     {
+        private const int NAME = 0;
+        private const int EMAIL = 1;
+        private const int ADDRESS = 3;
+        private const int PHONE = 2;
+        private const int USER_TYPE = 4;
+        private const int INITIAL_MONEY = 5;
+
         public async Task<IEnumerable<User>> GetAll()
         {
             List<User> users = new List<User>();
 
-            var reader = ReadUsersFromFile();
+            var reader = MakeFileReader();
 
             while (reader.Peek() >= 0)
             {
                 var line = await reader.ReadLineAsync();
+                var splittedLine = line.Split(',');
                 var user = new User(
-                    line.Split(',')[0],
-                    line.Split(',')[1],
-                    line.Split(',')[3],
-                    line.Split(',')[2],
-                    line.Split(',')[4],
-                    decimal.Parse((string) line.Split(',')[5])
+                    splittedLine[NAME],
+                    splittedLine[EMAIL],
+                    splittedLine[ADDRESS],
+                    splittedLine[PHONE],
+                    splittedLine[USER_TYPE],
+                    decimal.Parse(splittedLine[INITIAL_MONEY])
                 );
 
                 users.Add(user);
@@ -38,13 +46,12 @@ namespace Sat.Recruitment.Api.Persistence
             return Task.CompletedTask;
         }
 
-        private StreamReader ReadUsersFromFile()
+        private static StreamReader MakeFileReader()
         {
             var path = Directory.GetCurrentDirectory() + "/Files/Users.txt";
+            var fileStream = new FileStream(path, FileMode.Open);
+            var reader = new StreamReader(fileStream);
 
-            FileStream fileStream = new FileStream(path, FileMode.Open);
-
-            StreamReader reader = new StreamReader(fileStream);
             return reader;
         }
     }
