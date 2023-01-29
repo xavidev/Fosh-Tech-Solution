@@ -32,7 +32,12 @@ namespace Sat.Recruitment.Api.Persistence
 
             return users;
         }
-        
+
+        public Task Save(User user)
+        {
+            return Task.CompletedTask;
+        }
+
         private StreamReader ReadUsersFromFile()
         {
             var path = Directory.GetCurrentDirectory() + "/Files/Users.txt";

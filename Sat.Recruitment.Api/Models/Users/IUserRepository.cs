@@ -6,5 +6,6 @@ namespace Sat.Recruitment.Api.Models.Users
     public interface IUserRepository
     {
         Task<IEnumerable<User>> GetAll();
+        Task Save(User user);
     }
 }

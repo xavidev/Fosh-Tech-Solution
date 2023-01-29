@@ -31,6 +31,7 @@ namespace Sat.Recruitment.Api
             services.AddControllers();
             services.AddSwaggerGen();
             services.AddScoped<UserCreator>();
+            services.AddScoped<IUserFactory, UserFactory>();
             services.AddScoped<IUserRepository, CSVFileUserRepository>();
         }
 
