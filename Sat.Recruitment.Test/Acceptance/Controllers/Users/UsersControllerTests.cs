@@ -19,26 +19,21 @@ namespace Sat.Recruitment.Test.Acceptance.Controllers.Users
         [Fact]
         public async Task Should_Create_User()
         {
-            var response = await GivenPostRequest(CreateUserRequestMother.NotCreated(), "/users/create-user");
+            var mike = CreateUserRequestMother.Mike();
+            var response = await GivenPostRequest(mike, "/users/create-user");
             await AssertUserCreated(response);
+            await GetUserRepository().Delete(mike.Email);
         }
-        
+
         [Fact]
         public async Task Should_Not_Create_User_When_Already_Exists()
         {
-            var response = await GivenPostRequest(CreateUserRequestMother.ExistentUser(), "/users/create-user");
+            var response = await GivenPostRequest(CreateUserRequestMother.Agustina(), "/users/create-user");
             await AssertUserDuplicated(response);
         }
 
         [Fact]
         public async Task Should_Not_Create_User_When_Invalid_User_Request()
-        {
-            var response = await GivenPostRequest(CreateUserRequestMother.Invalid(), "/users/create-user");
-            AssertInvalidRequest(response);
-        }
-
-        [Fact]
-        public async Task Should_Not_Create_User_When_Invalid_Initial_Money()
         {
             var response = await GivenPostRequest(CreateUserRequestMother.Invalid(), "/users/create-user");
             AssertInvalidRequest(response);

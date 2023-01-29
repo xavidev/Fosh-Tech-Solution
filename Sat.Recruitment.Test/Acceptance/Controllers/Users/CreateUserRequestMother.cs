@@ -4,12 +4,12 @@ namespace Sat.Recruitment.Test.Acceptance.Controllers.Users
 {
     public static class CreateUserRequestMother
     {
-        public static CreateUserRequest NotCreated()
+        public static CreateUserRequest Mike()
         {
             return new CreateUserRequest("Mike", "mike@gmail.com", "Av. Juan G", "+349 1122354215", "Normal", 124m);
         }
 
-        public static CreateUserRequest ExistentUser()
+        public static CreateUserRequest Agustina()
         {
             return new CreateUserRequest("Agustina", "Agustina@gmail.com", "Av. Juan G", "+349 1122354215", "Normal",
                 124m);

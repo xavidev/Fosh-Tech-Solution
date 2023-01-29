@@ -7,5 +7,6 @@ namespace Sat.Recruitment.Api.Models.Users
     {
         Task<IEnumerable<User>> GetAll();
         Task Save(User user);
+        Task Delete(string email);
     }
 }

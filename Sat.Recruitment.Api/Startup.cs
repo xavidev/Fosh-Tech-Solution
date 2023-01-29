@@ -32,7 +32,9 @@ namespace Sat.Recruitment.Api
             services.AddSwaggerGen();
             services.AddScoped<UserCreator>();
             services.AddScoped<IUserFactory, UserFactory>();
-            services.AddScoped<IUserRepository, CSVFileUserRepository>();
+            
+            var basePath = Configuration["Persistence:FileRepository:Path"];
+            services.AddScoped<IUserRepository>(x => new CSVFileUserRepository(basePath));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
