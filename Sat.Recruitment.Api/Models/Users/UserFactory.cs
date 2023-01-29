@@ -33,25 +33,13 @@ namespace Sat.Recruitment.Api.Models.Users
         
         private static bool IsDuplicated(List<User> users, User newUser)
         {
-            bool isDuplicated = false;
             foreach (var user in users)
             {
-                if (user.Email == newUser.Email
-                    ||
-                    user.Phone == newUser.Phone)
-                {
-                    isDuplicated = true;
-                }
-                else if (user.Name == newUser.Name)
-                {
-                    if (user.Address == newUser.Address)
-                    {
-                        isDuplicated = true;
-                    }
-                }
+                if (user.Email == newUser.Email || user.Phone == newUser.Phone) return true;
+                if (user.Name == newUser.Name && user.Address == newUser.Address) return true;
             }
 
-            return isDuplicated;
+            return false;
         }
     }
 }
